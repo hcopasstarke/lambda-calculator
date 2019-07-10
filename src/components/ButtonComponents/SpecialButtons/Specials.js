@@ -4,7 +4,7 @@ import { SpecialButton } from "./SpecialButton"
 
 export const Specials = () => {
 	// STEP 2 - add the imported data to state
-	let [specials] = useState(specialsArray)
+	const [specials] = useState(specialsArray)
 
 	return (
 		<div className='specials-container'>

@@ -4,11 +4,11 @@ import { numbers as numbersArray } from "../../../data"
 
 export const Numbers = props => {
 	// STEP 2 - add the imported data to state
-	let [numbers] = useState(numbersArray)
+	const [numbers] = useState(numbersArray)
 
-	let firstRow = numbers.slice(0, 3)
-	let secondRow = numbers.slice(3, 6)
-	let thirdRow = numbers.slice(6, 9)
+	const firstRow = numbers.slice(0, 3)
+	const secondRow = numbers.slice(3, 6)
+	const thirdRow = numbers.slice(6, 9)
 
 	return (
 		<div className='number-container'>

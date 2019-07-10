@@ -1,11 +1,10 @@
-import React, { useReducer } from "react"
+import React, { useState } from "react"
 import "./App.css"
 import { Numbers } from "./components/ButtonComponents/NumberButtons/Numbers"
 import Logo from "./components/DisplayComponents/Logo"
 import { Display } from "./components/DisplayComponents/Display"
 import { Operators } from "./components/ButtonComponents/OperatorButtons/Operators"
 import { Specials } from "./components/ButtonComponents/SpecialButtons/Specials"
-import { buttonPressReducer, CalcActionEventComm } from "./State"
 
 function App() {
 	// STEP 5 - After you get the components displaying using the provided data file, write your state hooks here.
@@ -13,25 +12,55 @@ function App() {
 	// Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should recieve 5 if the user clicks on
 	// the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
 	// Don't forget to pass the functions (and any additional data needed) to the components as props
+	const operatorUpdate = evt => {
+		setState({ ...state, operator: evt.target.value });
+	};
 
-	const [state, dispatch] = useReducer(buttonPressReducer, { displayValue: "" })
-	let contextBundle = { dispatch, value: state.displayValue }
+	const firstNumUpdate = evt => {
+		setState({ ...state, firstnumber: Number(evt.target.value) });
+	};
+
+	const secondNumUpdate = evt => {
+		setState({ ...state, secondnumber: Number(evt.target.value) });
+	};
+
+	const executeComputation = () => {
+		let z = null;
+		let operator = state.operator;
+		let firstnumber = state.firstnumber;
+		let secondnumber = state.secondnumber;
+
+		switch (operator) {
+			default:
+				z = firstnumber + secondnumber;
+				break;
+			case "-":
+				z = firstnumber - secondnumber;
+				break;
+			case "/":
+				z = firstnumber / secondnumber;
+				break;
+			case "*":
+				z = firstnumber * secondnumber;
+				break;
+		}
+
+		setState({ ...state, result: z });
+	};
 
 	return (
 		<div className='container'>
 			<Logo />
 			<div className='App'>
-				<CalcActionEventComm.Provider value={contextBundle}>
-					{<Display />}
-					<div className='keys'>
-						<div className='keypad'>
-							{<Specials />}
-							{<Numbers />}
-						</div>
-						<div className='operators-container'>{<Operators />}</div>
+				{<Display display={display} />}
+				<div className='keys'>
+					<div className='keypad'>
+						{<Specials doSpecial={doSpecial} />}
+						{<Numbers getValue={getValue} />}
 					</div>
-					{/* STEP 4 - Render your components here and be sure to properly import/export all files */}
-				</CalcActionEventComm.Provider>
+					<div className='operators-container'>{<Operators getOperator={getOperator} />}</div>
+				</div>
+				{/* STEP 4 - Render your components here and be sure to properly import/export all files */}
 			</div>
 		</div>
 	)

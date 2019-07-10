@@ -1,12 +1,10 @@
-import React, { useContext } from "react"
-import { CalcActionEventComm } from "../../State"
+import React from "react"
 
-export const Display = () => {
-	const contextBundle = useContext(CalcActionEventComm)
-
+export const Display = (props) => {
+	let display = props.display
 	return (
 		<div className='display'>
-			<div className='display-content'>{contextBundle.value}</div>
+			<div className='display-content'>{display}</div>
 		</div>
 	)
 }
