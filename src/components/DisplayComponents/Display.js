@@ -1,5 +1,12 @@
-import React from "react";
+import React, { useContext } from "react"
+import { CalcActionEventComm } from "../../State"
 
-const Display = () => {
-  return <div>{/* Display any props data here */}</div>;
-};
+export const Display = () => {
+	const contextBundle = useContext(CalcActionEventComm)
+
+	return (
+		<div className='display'>
+			<div className='display-content'>{contextBundle.value}</div>
+		</div>
+	)
+}
