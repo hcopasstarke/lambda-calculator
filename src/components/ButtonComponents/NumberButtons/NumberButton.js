@@ -1,13 +1,13 @@
 import React from "react"
 
-export const NumberButton = props => {
+export const NumberButton = (props) => {
 	let classes = "number-button"
 	if (props.wide) {
 		classes += " wide"
 	}
 
 	function handleClick() {
-		console.log(`Clicked ${props.value}`)
+		props.onClickHandler(props.value)
 	}
 
 	return (

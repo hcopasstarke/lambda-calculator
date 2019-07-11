@@ -6,29 +6,33 @@ export const Numbers = props => {
 	// STEP 2 - add the imported data to state
 	const [numbers] = useState(numbersArray)
 
-	const firstRow = numbers.slice(0, 3)
-	const secondRow = numbers.slice(3, 6)
-	const thirdRow = numbers.slice(6, 9)
+	let firstRow = numbers.slice(0, 3)
+	let secondRow = numbers.slice(3, 6)
+	let thirdRow = numbers.slice(6, 9)
 
 	return (
 		<div className='number-container'>
 			<div className='number-row'>
 				{firstRow.map((number, i) => {
-					return <NumberButton key={i} value={number} />
+					return <NumberButton key={i} value={number} onClickHandler={props.onClickHandler} />
 				})}
 			</div>
 			<div className='number-row'>
 				{secondRow.map((number, i) => {
-					return <NumberButton key={i} value={number} />
+					return <NumberButton key={i} value={number} onClickHandler={props.onClickHandler} />
 				})}
 			</div>
 			<div className='number-row'>
 				{thirdRow.map((number, i) => {
-					return <NumberButton key={i} value={number} />
+					return <NumberButton key={i} value={number} onClickHandler={props.onClickHandler} />
 				})}
 			</div>
 			<div className='number-row'>
-				<NumberButton value={numbers[numbers.length - 2]} wide={true} />
+				<NumberButton
+					value={numbers[numbers.length - 2]}
+					wide={true}
+					onClickHandler={props.onClickHandler}
+				/>
 				<NumberButton value={numbers[numbers.length - 1]} />
 			</div>
 			{/* STEP 3 - Use .map() to iterate over your array data and return a button

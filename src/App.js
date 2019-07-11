@@ -12,58 +12,83 @@ function App() {
 	// Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should recieve 5 if the user clicks on
 	// the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
 	// Don't forget to pass the functions (and any additional data needed) to the components as props
-	const operatorUpdate = evt => {
-		setState({ ...state, operator: evt.target.value });
-	};
+	const [display, setDisplay] = useState("")
+	const [previousNumber, setPreviousNumberVal] = useState("")
+	const [operator, setOperator] = useState("")
+	const [clearDisplayOnNextOperation, setShouldClearDisplayOnNextOperation] = useState(false)
 
-	const firstNumUpdate = evt => {
-		setState({ ...state, firstnumber: Number(evt.target.value) });
-	};
+	let numberOnClickHandler = function (value) {
+		if (clearDisplayOnNextOperation) {
+			setDisplay(value)
+			setShouldClearDisplayOnNextOperation(false)
+		} else {
+			setDisplay(display + value)
+		}
+	}
 
-	const secondNumUpdate = evt => {
-		setState({ ...state, secondnumber: Number(evt.target.value) });
-	};
+	let operatorOnClickHandler = function (value) {
+		if (operator.length > 0 && operator !== "=") {
+			performOperation()
+			setOperator(value)
+		} else if (operator.length > 0 && operator === "=") {
+			performOperation()
+			setOperator("")
+		} else if (operator.length > 0) {
+			performOperation()
+			setOperator(value)
+		} else {
+			setOperator(value)
+		}
 
-	const executeComputation = () => {
-		let z = null;
-		let operator = state.operator;
-		let firstnumber = state.firstnumber;
-		let secondnumber = state.secondnumber;
+		setPreviousNumberVal(display)
+		setShouldClearDisplayOnNextOperation(true)
+	}
+
+	let specialOnClickHandler = function (value) {
+		if (value === "C") {
+			setDisplay("")
+			setPreviousNumberVal("")
+			setOperator("")
+		}
+	}
+
+	let performOperation = function () {
+		const firstValue = parseInt(display)
+		const secondValue = parseInt(previousNumber)
 
 		switch (operator) {
 			default:
-				z = firstnumber + secondnumber;
+				setDisplay(firstValue + secondValue)
 				break;
 			case "-":
-				z = firstnumber - secondnumber;
+				setDisplay(firstValue - secondValue);
 				break;
 			case "/":
-				z = firstnumber / secondnumber;
+				setDisplay(firstValue / secondValue)
 				break;
 			case "*":
-				z = firstnumber * secondnumber;
+				setDisplay(firstValue * secondValue)
 				break;
 		}
-
-		setState({ ...state, result: z });
-	};
+	}
 
 	return (
-		<div className='container'>
+		<div className="container">
 			<Logo />
-			<div className='App'>
-				{<Display display={display} />}
-				<div className='keys'>
-					<div className='keypad'>
-						{<Specials doSpecial={doSpecial} />}
-						{<Numbers getValue={getValue} />}
+			<div className="App">
+				{<Display value={display} />}
+				<div className="keys">
+					<div className="keypad">
+						{<Specials onClickHandler={specialOnClickHandler} />}
+						{<Numbers onClickHandler={numberOnClickHandler} />}
 					</div>
-					<div className='operators-container'>{<Operators getOperator={getOperator} />}</div>
+					<div className="operators-container">
+						{<Operators onClickHandler={operatorOnClickHandler} />}
+					</div>
 				</div>
-				{/* STEP 4 - Render your components here and be sure to properly import/export all files */}
 			</div>
 		</div>
-	)
+	);
 }
 
-export default App
+export default App;
